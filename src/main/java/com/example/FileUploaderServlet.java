@@ -42,15 +42,11 @@ public class FileUploaderServlet extends HttpServlet {
             return;
         }
 
-        System.out.println("Filename " + uploadedFile.getName());
-
         FileDatabase fileDatabase = FileDatabase.getInstance();
-        int fileId = fileDatabase.storeFile(uploadedFile);
-
-        System.out.println(items.get(0));
+        FileEntry fileEntry = fileDatabase.storeFile(uploadedFile);
 
         // Redirect to share page.
         response.setStatus(response.SC_MOVED_TEMPORARILY);
-        response.setHeader("Location", "share_file.jsp?id=" + fileId);
+        response.setHeader("Location", "share_file.jsp?id=" + fileEntry.getId());
     }
 }

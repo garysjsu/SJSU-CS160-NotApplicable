@@ -6,7 +6,6 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import org.apache.commons.fileupload.FileItem;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Random;
@@ -17,26 +16,32 @@ import java.util.Random;
 public class FileDatabase {
 
     private final FileContentsPersistor persistor;
-    private final MetadataDatabase metadataDatabase;
+    private final FileMetadataDatabase fileMetadataDatabase;
     private static FileDatabase instance;
 
-    public FileDatabase(FileContentsPersistor persistor, MetadataDatabase metadataDatabase) {
+    public FileDatabase(FileContentsPersistor persistor, FileMetadataDatabase fileMetadataDatabase) {
         this.persistor = persistor;
-        this.metadataDatabase = metadataDatabase;
+        this.fileMetadataDatabase = fileMetadataDatabase;
     }
 
-    public int storeFile(FileItem fileItem) {
+    public FileEntry storeFile(FileItem fileItem) {
 
-        int fileId = 1000 + new Random().nextInt(2000 - 1000 + 1);
-        String fileName = "abcd-" + fileId;
+        String fileName = fileItem.getName();
+        long fileSize = fileItem.getSize();
+
+        FileMetadata metadata = fileMetadataDatabase.create(fileName, fileSize);
 
         try {
-            persistor.persistContents(fileName, fileItem.getInputStream());
+            persistor.persistContents("abcd-" + metadata.getId(), fileItem.getInputStream());
         } catch (IOException e) {
             System.out.println("Error" + e);
         }
 
-        return fileId;
+        return new FileEntry(persistor, metadata);
+    }
+
+    public FileEntry getFileEntry(int fileId) {
+        return new FileEntry(persistor, fileMetadataDatabase.get(fileId));
     }
 
     public static FileDatabase getInstance() {
@@ -48,10 +53,10 @@ public class FileDatabase {
         String secretKey = System.getenv("AWS_SECRET_ACCESS_KEY");
         AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
         AmazonS3 s3client = new AmazonS3Client(credentials);
-        FileContentsPersistor persistor = new FileContentsPersistor(s3client);
-        MetadataDatabase metadataDatabase = new MetadataDatabase();
+        FileContentsPersistor persistor = new FileContentsPersistor(s3client, "handoff-dev");
+        FileMetadataDatabase fileMetadataDatabase = new FileMetadataDatabase();
 
-        FileDatabase fileDatabase = new FileDatabase(persistor, metadataDatabase);
+        FileDatabase fileDatabase = new FileDatabase(persistor, fileMetadataDatabase);
         instance = fileDatabase;
 
         return fileDatabase;

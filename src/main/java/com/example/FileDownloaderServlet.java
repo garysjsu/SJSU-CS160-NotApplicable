@@ -1,5 +1,9 @@
 package com.example;
+
+import org.apache.commons.io.IOUtils;
+
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -14,7 +18,18 @@ public class FileDownloaderServlet extends HttpServlet {
             throws ServletException, IOException {
         ServletOutputStream out = response.getOutputStream();
 
-        response.setHeader("Content-Disposition", "attachment; file=\"test.txt\"");
-        out.println("This is test.txt");
+        int fileId = new Integer(request.getParameter("id"));
+
+        System.out.println("FILEID " + fileId);
+        FileDatabase fileDatabase = FileDatabase.getInstance();
+
+        FileEntry fileEntry = fileDatabase.getFileEntry(fileId);
+        InputStream contentsIn = fileEntry.getContents();
+        FileMetadata metadata  = fileEntry.getMetadata();
+
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + metadata.getName() + "\"");
+
+        IOUtils.copy(contentsIn, out);
+        contentsIn.close();
     }
 }

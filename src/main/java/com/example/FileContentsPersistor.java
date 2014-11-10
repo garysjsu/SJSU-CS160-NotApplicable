@@ -11,16 +11,18 @@ import java.io.InputStream;
 public class FileContentsPersistor {
 
     private final AmazonS3 s3client;
+    private final String bucketName;
 
-    public FileContentsPersistor(AmazonS3 s3client) {
+    public FileContentsPersistor(AmazonS3 s3client, String bucketName) {
         this.s3client = s3client;
+        this.bucketName = bucketName;
     }
 
     public void persistContents(String fileName, InputStream in) {
-        s3client.putObject("handoff-dev", fileName, in, new ObjectMetadata());
+        s3client.putObject(bucketName, fileName, in, new ObjectMetadata());
     }
 
     public InputStream getContents(String fileName) {
-        return null;
+        return s3client.getObject(bucketName, fileName).getObjectContent();
     }
 }
