@@ -41,7 +41,7 @@
     <div class="splash">
         <h1 class="splash-head" style="font-weight:bold;">HANDOFF</h1>
         <p class="splash-subhead">
-            Upload file instantly.
+            Upload and share file instantly.
         </p>
        <form action="./upload" method="POST" enctype="multipart/form-data">
            <input style="color: #fff" type="file" name="file"/>
