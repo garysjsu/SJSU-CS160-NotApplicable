@@ -12,7 +12,7 @@ import java.io.InputStream;
 import java.util.Random;
 
 /**
- * Created by garindraprahandono on 11/8/14.
+ * Main abstraction of file-storing.
  */
 public class FileDatabase {
 

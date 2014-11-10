@@ -6,7 +6,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import java.io.InputStream;
 
 /**
- * Created by garindraprahandono on 11/9/14.
+ * Persists file contents on Amazon S3.
  */
 public class FileContentsPersistor {
 
