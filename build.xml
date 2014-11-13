@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- Ant build file (http://ant.apache.org/) for Ant 1.6.2 or above.        -->
+<!-- ====================================================================== -->
+
+<project name="HandOff" default="war" basedir=".">
+
+	<!-- ====================================================================== -->
+	<!-- Import maven-build.xml into the current project                        -->
+	<!-- ====================================================================== -->
+
+	<import file="maven-build.xml"/>
+	<taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" >
+		<classpath>
+			<path location="${maven.repo.local}/org/apache/tomcat/catalina-ant/6.0.41/catalina-ant-6.0.41.jar/catalina-ant-6.0.41.jar"/>
+		</classpath>
+	</taskdef>
+
+	<taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask" >
+		<classpath>
+			<path location="${maven.repo.local}/org/apache/tomcat/catalina-ant/6.0.41/catalina-ant-6.0.41.jar/catalina-ant-6.0.41.jar"/>
+		</classpath>
+	</taskdef>
+	
+    <target name="war" depends="compile,test" description="Builds the war for the application">
+		<echo>Building the war file</echo>
+		<war destfile="${maven.build.dir}/${maven.build.finalName}.war" webxml="${maven.build.srcDir.0}/webapp/WEB-INF/web.xml">
+			<fileset dir="${maven.build.dir}"/>
+		</war>
+    </target>
+    
+	<target name="deploy" description="Deploys the war for the application">
+		<echo>Deploying the war file</echo>
+		<deploy
+			url="${tomcat-manager-url}"
+			username="admin"
+			password="admin"
+			path="/${maven.build.finalName}"
+			war="${maven.build.dir}/${maven.build.finalName}.war"
+		/>
+	</target>
+	
+	<target name="undeploy" description="Deploys the war for the application">
+		<echo>Undeploying the war file</echo>
+		<deploy
+			failonerror="no"
+			url="${tomcat-manager-url}"
+			username="admin"
+			password="admin"
+			path="/${maven.build.finalName}"
+		/>
+	</target>
+	<!-- ====================================================================== -->
+	<!-- Help target                                                            -->
+	<!-- ====================================================================== -->
+
+	<target name="help">
+		<echo message="Please run: $ant -projecthelp"/>
+	</target>
+
+</project>
