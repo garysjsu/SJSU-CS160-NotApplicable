@@ -9,7 +9,7 @@
 	<!-- ====================================================================== -->
 	<!-- Import maven-build.xml into the current project                        -->
 	<!-- ====================================================================== -->
-
+	
 	<import file="maven-build.xml"/>
 	<taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" >
 		<classpath>
@@ -34,8 +34,8 @@
 		<echo>Deploying the war file</echo>
 		<deploy
 			url="${tomcat-manager-url}"
-			username="admin"
-			password="admin"
+			username=""
+			password=""
 			path="/${maven.build.finalName}"
 			war="${maven.build.dir}/${maven.build.finalName}.war"
 		/>
@@ -46,11 +46,25 @@
 		<deploy
 			failonerror="no"
 			url="${tomcat-manager-url}"
-			username="admin"
-			password="admin"
+			username=""
+			password=""
 			path="/${maven.build.finalName}"
 		/>
 	</target>
+	
+	<target name="dbcreate" description="Creates a db and loads tables">
+		<echo>Creating tables</echo>
+		<exec executable="mysql" input="sampledata.sql" />
+	</target>
+	
+	<target name="dbdrop" description="Drops the db">
+		<echo>Dropping tables</echo>
+		<exec executable="mysql">
+			<arg value="drop" />
+			<arg value="sampledata" />
+		</exec>
+	</target>
+	
 	<!-- ====================================================================== -->
 	<!-- Help target                                                            -->
 	<!-- ====================================================================== -->
