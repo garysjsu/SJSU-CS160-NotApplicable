@@ -2,12 +2,11 @@
 <project name="HandOff" default="war" basedir="..">
 	
 	<property file="ant/build.properties"/>
-	<!--artifact:pom id="mypom" file="pom.xml" /-->
-	
-	<path id="classpath">
-		<fileset dir="${lib.dir}" includes="servlet-api.jar"/>
-	</path>
-	
+	<import file="maven-build.xml"/>
+  
+	<target name="help">
+		<echo message="Please run: $ant -projecthelp"/>
+    </target>
 	
 	<target name="clean">
 		<echo>Cleaning this ${build.dir}</echo>

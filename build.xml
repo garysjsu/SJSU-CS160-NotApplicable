@@ -59,9 +59,10 @@
 	
 	<target name="dbdrop" description="Drops the db">
 		<echo>Dropping tables</echo>
-		<exec executable="mysql">
+		<exec executable="mysqladmin">
 			<arg value="drop" />
-			<arg value="sampledata" />
+			<arg value="test" />
+			<arg value="-f" />
 		</exec>
 	</target>
 	
