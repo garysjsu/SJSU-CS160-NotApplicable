@@ -34,8 +34,8 @@
 		<echo>Deploying the war file</echo>
 		<deploy
 			url="${tomcat-manager-url}"
-			username=""
-			password=""
+			username="ant"
+			password="ant"
 			path="/${maven.build.finalName}"
 			war="${maven.build.dir}/${maven.build.finalName}.war"
 		/>
@@ -46,8 +46,8 @@
 		<deploy
 			failonerror="no"
 			url="${tomcat-manager-url}"
-			username=""
-			password=""
+			username="ant"
+			password="ant"
 			path="/${maven.build.finalName}"
 		/>
 	</target>
