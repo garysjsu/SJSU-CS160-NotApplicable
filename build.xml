@@ -23,10 +23,11 @@
 		</classpath>
 	</taskdef>
 	
-    <target name="war" depends="compile,test" description="Builds the war for the application">
+    <target name="war" depends="clean, compile,test" description="Builds the war for the application">
 		<echo>Building the war file</echo>
 		<war destfile="${maven.build.dir}/${maven.build.finalName}.war" webxml="${maven.build.srcDir.0}/webapp/WEB-INF/web.xml">
 			<fileset dir="${maven.build.dir}"/>
+			<fileset dir="${maven.build.srcDir.0}/webapp"/>
 		</war>
     </target>
     
@@ -43,7 +44,7 @@
 	
 	<target name="undeploy" description="Deploys the war for the application">
 		<echo>Undeploying the war file</echo>
-		<deploy
+		<undeploy
 			failonerror="no"
 			url="${tomcat-manager-url}"
 			username="ant"
