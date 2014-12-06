@@ -22,4 +22,8 @@ public class FileMetadata {
     public String getName() {
         return name;
     }
+    
+    public long getSize() {
+		return size;
+	}
 }

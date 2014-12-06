@@ -7,7 +7,7 @@ import java.sql.*;
  * trying to do Java connection with MySQL. Plz help if you see me doing something wrong. 
  */
 
-public class MySQLconnectorJavaBean {
+public class MySQLconnectorJavaBean { // Database name: FileMetadata
 	// STEP 1. Import required packages
 
 	// JDBC driver name and database URL
@@ -17,13 +17,12 @@ public class MySQLconnectorJavaBean {
 	// Database credentials
 	static final String USER = "root";
 	static final String PASS = "tree";
-	
+
 	private Connection conn = null;
 	private Statement stmt = null;
-	
-	
-    public MySQLconnectorJavaBean(){//
-	//public static void main(String[] args) {
+
+	public MySQLconnectorJavaBean() {//
+		// public static void main(String[] args) {
 		conn = null;
 		stmt = null;
 		try {
@@ -81,16 +80,36 @@ public class MySQLconnectorJavaBean {
 		}// end try
 		System.out.println("Goodbye!");
 	}// end main
-	
-	public void add(int ID, String name, int size, String address){
-		
+
+	public void add(FileMetadata a) {
+		String update = "INSERT INTO FileMetadata (id, name, size)"
+				+ "VALUES (" + a.getId() + ", " + a.getName() + ", " + a.getSize() + ")";
+		System.out.print("    Update: ");
+		int rowCount = 0;
+		try {
+			rowCount = stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println(rowCount + " rows changed.");
+
 	}
-	
-	public boolean remove(int ID){
-		return false;
+
+	public void remove(int ID) {
+		String delete = "DELETE FROM FileMetadata" + "WHERE first '" + ID + "'";
+		System.out.print("    Delete: ");
+		int rowCount = 0;
+		try {
+			rowCount = stmt.executeUpdate(delete);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println(rowCount + " rows removed.");
+
 	}
-	
-	public FileMetadata getData(int ID){
+
+	public FileMetadata getData(int ID) {
 		return null;
 	}
 }// end FirstExample
