@@ -53,6 +53,13 @@
             <artifactId>aws-java-sdk</artifactId>
             <version>1.0.002</version>
         </dependency>
+		
+		<!-- MySQL JDBC Connector Driver-->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.17</version>
+		</dependency>
     </dependencies>
 
     <build>
