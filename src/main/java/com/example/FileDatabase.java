@@ -29,7 +29,7 @@ public class FileDatabase {
         String fileName = fileItem.getName();
         long fileSize = fileItem.getSize();
 
-        FileMetadata metadata = fileMetadataDatabase.create(fileName, fileSize);
+        FileMetadata metadata = fileMetadataDatabase.add(fileName, fileSize);
 
         try {
             persistor.persistContents("abcd-" + metadata.getId(), fileItem.getInputStream());
@@ -41,7 +41,7 @@ public class FileDatabase {
     }
 
     public FileEntry getFileEntry(int fileId) {
-        return new FileEntry(persistor, fileMetadataDatabase.get(fileId));
+        return new FileEntry(persistor, fileMetadataDatabase.getData(fileId));
     }
 
     public static FileDatabase getInstance() {

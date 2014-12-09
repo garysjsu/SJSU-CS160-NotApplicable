@@ -50,7 +50,7 @@ public class FileMetadataDatabase {
 	 * @param size
 	 * @return ID number given by Database. Record to use again. 
 	 */
-	public int add(String name, long size) { 
+	public FileMetadata add(String name, long size) { 
 		openConnection();
 		int id = -1;
 		String update = "INSERT INTO FileMetadata (name, size) VALUES ('"
@@ -68,7 +68,7 @@ public class FileMetadataDatabase {
 		}
 		System.out.println(rowCount + " rows changed.");
 		closeConnection();
-		return id;
+		return new FileMetadata(id, name, size);
 	}
 
 	/**
