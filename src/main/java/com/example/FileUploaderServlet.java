@@ -10,9 +10,7 @@ import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 
 public class FileUploaderServlet extends HttpServlet {
 
@@ -42,8 +40,18 @@ public class FileUploaderServlet extends HttpServlet {
             return;
         }
 
+        HttpSession session = request.getSession(true);
+        String uploaderIdentifier;
+
+        if (session.getAttribute("uploader_identifier") == null) {
+            uploaderIdentifier = "abc123";
+            session.setAttribute("uploader_identifier", uploaderIdentifier);
+        } else {
+            uploaderIdentifier = (String) session.getAttribute("uploader_identifier");
+        }
+
         FileDatabase fileDatabase = FileDatabase.getInstance();
-        FileEntry fileEntry = fileDatabase.storeFile(uploadedFile);
+        FileEntry fileEntry = fileDatabase.storeFile(uploaderIdentifier, uploadedFile);
 
         // Redirect to share page.
         response.setStatus(response.SC_MOVED_TEMPORARILY);

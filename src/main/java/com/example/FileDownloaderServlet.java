@@ -16,11 +16,11 @@ public class FileDownloaderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         ServletOutputStream out = response.getOutputStream();
 
         int fileId = new Integer(request.getParameter("id"));
 
-        System.out.println("FILEID " + fileId);
         FileDatabase fileDatabase = FileDatabase.getInstance();
 
         FileEntry fileEntry = fileDatabase.getFileEntry(fileId);
@@ -31,5 +31,10 @@ public class FileDownloaderServlet extends HttpServlet {
 
         IOUtils.copy(contentsIn, out);
         contentsIn.close();
+
+        String userAgent = request.getHeader("User-Agent");
+        String ipAddress = request.getRemoteAddr();
+
+        DownloadTracker.getInstance().trackDownload(fileId, userAgent, ipAddress);
     }
 }

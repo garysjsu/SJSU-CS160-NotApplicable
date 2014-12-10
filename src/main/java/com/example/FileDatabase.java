@@ -24,12 +24,12 @@ public class FileDatabase {
         this.fileMetadataDatabase = fileMetadataDatabase;
     }
 
-    public FileEntry storeFile(FileItem fileItem) {
+    public FileEntry storeFile(String uploaderId, FileItem fileItem) {
 
         String fileName = fileItem.getName();
         long fileSize = fileItem.getSize();
 
-        FileMetadata metadata = fileMetadataDatabase.add(fileName, fileSize);
+        FileMetadata metadata = fileMetadataDatabase.add(uploaderId, fileName, fileSize);
 
         try {
             persistor.persistContents("abcd-" + metadata.getId(), fileItem.getInputStream());

@@ -7,42 +7,17 @@ import java.sql.*;
  */
 
 public class FileMetadataDatabase { 
-	// Database name: FileMetadata
 
 	// JDBC driver name and database URL
-	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost/EMP";
-
 	// Database credentials
 	static final String USER = "root";
-	static final String PASS = "tree";
-	static int IDcount = 0;
+	static final String PASS = ""; //"tree";
 
 	private Connection conn = null;
 	private Statement stmt = null;
 
-
-	public FileMetadataDatabase() {
-	}
-
-	/**
-	 * Should not use as Database automatically increments id counter. 
-	 * @param a
-	 */
-	public void add(FileMetadata a) { 
-		openConnection();
-		String update = "INSERT INTO FileMetadata " + "VALUES (" + a.getId()
-				+ ", '" + a.getName() + "', " + a.getSize() + ")";
-		System.out.print("    Update: ");
-		int rowCount = 0;
-		try {
-			rowCount = stmt.executeUpdate(update);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		System.out.println(rowCount + " rows changed.");
-		closeConnection();
-	}
+	public FileMetadataDatabase() { }
 
 	/**
 	 * Database auto-increments id number, use to add Metadata. 
@@ -50,11 +25,12 @@ public class FileMetadataDatabase {
 	 * @param size
 	 * @return ID number given by Database. Record to use again. 
 	 */
-	public FileMetadata add(String name, long size) { 
+	public FileMetadata add(String uploaderId, String name, long size) {
 		openConnection();
 		int id = -1;
-		String update = "INSERT INTO FileMetadata (name, size) VALUES ('"
-				+ name + "', " + size + ")";
+		String update = "INSERT INTO FileMetadata (uploader_id, name, size) VALUES ('"
+				+ uploaderId + "','" + name + "', " + size + ")";
+
 		System.out.print("    Update: ");
 		ResultSet res = null;
 		int rowCount = 0;
@@ -68,7 +44,7 @@ public class FileMetadataDatabase {
 		}
 		System.out.println(rowCount + " rows changed.");
 		closeConnection();
-		return new FileMetadata(id, name, size);
+		return new FileMetadata(id, name, size, uploaderId);
 	}
 
 	/**
@@ -102,12 +78,15 @@ public class FileMetadataDatabase {
 		int id = 0;
 		String name = null;
 		long size = 0;
+		String uploaderId = null;
+
 		try {
 			res = stmt.executeQuery(que);
 			if (res.next()) {
 				id = res.getInt("Id");
 				name = res.getString("Name");
 				size = res.getLong("Size");
+				uploaderId = res.getString("uploader_id");
 				if (res.next()) {
 					System.out.println("has next");
 				}
@@ -116,7 +95,7 @@ public class FileMetadataDatabase {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		FileMetadata stuff = new FileMetadata(id, name, size);
+		FileMetadata stuff = new FileMetadata(id, name, size, uploaderId);
 		closeConnection();
 		return stuff;
 	}

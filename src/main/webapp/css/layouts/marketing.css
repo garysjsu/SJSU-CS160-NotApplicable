@@ -12,6 +12,7 @@ body {
     line-height: 1.7em;
     color: #7f8c8d;
     font-size: 13px;
+    font-family: 'Open Sans', sans-serif;
 }
 
 h1,
@@ -132,7 +133,8 @@ a.pure-button-primary {
  */
 
 .splash-container {
-    background: #1f8dd6;
+    /*background: #1f8dd6;*/
+background: url(//d4yt8xl9b7in.cloudfront.net/assets/home/hero-background-gradient-dark-8daa3366feadc4220ec728fb8cae945c.png),url(//d4yt8xl9b7in.cloudfront.net/assets/home/hero-background-gradient-light-429e15c8063a418cf4a429d99724e09f.png),linear-gradient(to bottom, #58488a, #6299c9);
     z-index: 1;
     overflow: hidden;
     /* The following styles are required for the "scroll-over" effect */
@@ -159,8 +161,8 @@ a.pure-button-primary {
     font-size: 20px;
     font-weight: bold;
     color: white;
-    border: 3px solid white;
-    padding: 1em 1.6em;
+    /*border: 3px solid white;*/
+    /*padding: 1em 1.6em;*/
     font-weight: 100;
     border-radius: 5px;
     line-height: 1em;
