@@ -7,6 +7,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -44,7 +45,8 @@ public class FileUploaderServlet extends HttpServlet {
         String uploaderIdentifier;
 
         if (session.getAttribute("uploader_identifier") == null) {
-            uploaderIdentifier = "abc123";
+            Random generator = new Random(); int i = generator.nextInt(100);
+            uploaderIdentifier = "abc123" + i;
             session.setAttribute("uploader_identifier", uploaderIdentifier);
         } else {
             uploaderIdentifier = (String) session.getAttribute("uploader_identifier");

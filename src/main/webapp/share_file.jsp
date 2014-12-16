@@ -8,6 +8,12 @@
     FileMetadata fileMetadata = fileEntry.getMetadata();
     String uploaderId = (String) session.getAttribute("uploader_identifier");
     boolean isUploader = fileMetadata.getUploaderId().equals(uploaderId);
+
+    String serverName = request.getServerName().toLowerCase();
+    String scheme = request.getScheme();
+    int port = request.getServerPort();
+
+    String val = scheme + "://" + serverName + ":" + port;
 %>
 
 <!doctype html>
@@ -34,12 +40,12 @@
         <p class="splash-subhead">
 
             <% if (isUploader) { %>
-                Upload successful.<br/> Share this URL: <input type="text" value="http://localhost:8080/share_file.jsp?id=<%= fileId %>" />
+                Upload successful.<br/> Share this URL: <input type="text" value="<%= val %>/share_file.jsp?id=<%= fileId %>" />
                 <br/>
                 <button onclick="window.location='download?id=<%= request.getParameter("id") %>'">Download</button>
                 <button onclick="window.location='download_stats.jsp?id=<%= request.getParameter("id") %>'">Download Stats</button>
             <% } else { %>
-                <h3>Somebody shared this file with you:</h3><b><%= fileMetadata.getName() %></b>!
+                <h3 style="color:white;">Somebody shared this file with you:</h3><b><%= fileMetadata.getName() %></b>!
                 <br/>
                 <button onclick="window.location='download?id=<%= request.getParameter("id") %>'">Download</button>
             <% } %>

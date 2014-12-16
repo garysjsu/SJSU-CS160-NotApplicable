@@ -12,10 +12,11 @@ public class DownloadTracker {
     private static DownloadTracker instance;
 
     // JDBC driver name and database URL
-    static final String DB_URL = "jdbc:mysql://localhost/EMP";
-    // Database credentials
-    static final String USER = "root";
-    static final String PASS = ""; //"tree";
+    // and Database credentials
+    static final String DB_URL = "jdbc:mysql://" + System.getenv("DB_USER") + "/" + System.getenv("DB_NAME");
+    static final String USER = System.getenv("DB_USER");
+    static final String PASS = System.getenv("DB_PASS");
+
     private Connection conn = null;
     private Statement stmt = null;
 
